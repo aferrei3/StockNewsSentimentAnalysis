@@ -10,3 +10,6 @@ pip install bs4
 
 pip install textblob
 
+
+Also make sure to keep tickers.txt and proj.py in the same directory as proj.py is reliant on tickers.txt and it will not work otherwise.
+
