@@ -1,26 +1,13 @@
 # Import libraries
 import requests
 import urllib.request
-import time
+#import time
 from bs4 import BeautifulSoup
-import re
+#import re
 from textblob import TextBlob
-from InvestopediaApi import ita
+
 from tkinter import *
 import tkinter as tk
-
-
-
-
-class TickerSent:
-    def __init__(self):
-        self.ticker = ''
-        self.sentiment = 0.0
-
-
-
-
-
 
 CAP_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -35,9 +22,29 @@ URL_3 = 'https://seekingalpha.com/market-news/healthcare'
 URL_4 = 'https://seekingalpha.com/market-news/on-the-move'
 
 
+class TickerSent:
+    def __init__(self):
+        self.ticker = ''
+        self.sentiment = 0.0
+
+#Class ticker sent initializes a ticker value
 
 
 
+#DOCUMENT CODE
+
+
+
+
+
+
+
+'''
+findHyperLinks is used to find all given hyper links in a webpage in order to
+find the linked tickers on a webpage we will later use this in the function
+get sentiment
+
+'''
 
 
 def findHyperLinks(url):
@@ -45,6 +52,13 @@ def findHyperLinks(url):
     hyper_link_list = getHtmlElements(url,'a')
     
     return hyper_link_list
+'''
+findTickersInHyperLinks uses the function getTickers and a list generated from find 
+hyperLinks in order to generate a list of the tickers that are on the webpage 
+I created this function so that when i generated a list of the tickers in the website 
+I wouldnt get a bunch of capital letters and useless data
+'''
+
 
 def findTickersInHyperLinks(hyper_link_list):
 
@@ -57,6 +71,12 @@ def findTickersInHyperLinks(hyper_link_list):
             tickers_in_site.append(i)
 
     return tickers_in_site
+
+'''
+getTickers was created in order to parse the document that I created called
+tickers.txt and to create a list of tickers from it in order to cross reference it
+with the tickers found in the website so that I would be pulling useful data
+'''
 
 
 
@@ -74,7 +94,10 @@ def getTickers():
 
     return ticker_list
 
-
+'''
+The function getHtmlElements was created in order to be used with getHyperLinks
+so that it would only pull data that had hyper links
+'''
 
 def getHtmlElements(url,data_type_as_str):
 
@@ -95,7 +118,12 @@ def getHtmlElements(url,data_type_as_str):
 
     return link_list
 
-def getText(text_list,url):
+'''
+getText was created in order to parse through the text on the website that related to
+tickers
+'''
+
+def getText(url):
 
 
     response = requests.get(url)
@@ -119,7 +147,11 @@ def getText(text_list,url):
 
     return news_list
 
+'''
+Get sentiment was created in order to generate a dictionary with values that 
+corresponded to how the stock was doing on the website
 
+'''
 
 def getSentiment(news_list,url):
 
@@ -145,10 +177,10 @@ def getSentiment(news_list,url):
 
                                 if j in ticker_sentiment_dict:
                                     x = ticker_sentiment_dict[j]
-                                    x += sentence.sentiment.polarity
+                                    x += round(sentence.sentiment.polarity, 3)
                                     ticker_sentiment_dict[j] = x
                                 else:
-                                    ticker_sentiment_dict[j] = sentence.sentiment.polarity
+                                    ticker_sentiment_dict[j] = round(sentence.sentiment.polarity, 3)
 
 
 
@@ -157,7 +189,6 @@ def getSentiment(news_list,url):
     return ticker_sentiment_dict
 
 
-##################################ROBINHOOD#######################################
 
 
 
@@ -166,7 +197,11 @@ def getSentiment(news_list,url):
 
 
         
-
+'''
+loalListSentiment is essentially the aggregation of all the functions used in the non
+GUI part of the program and would serve as the main if this program didn't have a
+GUI 
+'''
 def loadListSentiment(url):
 
 
@@ -235,13 +270,14 @@ remove button\
  and is mainly a prototype which could be improved on. Also  note that time between\
  pressing the button and executing the function will take a second or two since\
  webscraping the webpage takes a bit of time.")
-
+#Here we have the introductory portion of the program
 
         self.top_news = tk.Button(self)
         self.top_news["text"] = "Seeking Alpha\nTop Market News"
 
         self.top_news["command"] = self.Link1
         self.top_news.pack(side="left")
+
 
         self.all_news = tk.Button(self)
         self.all_news["text"] = "Seeking Alpha\nAll Market News"
@@ -270,13 +306,7 @@ remove button\
         self.move_news["command"] = self.Link5
         self.move_news.pack(side="left")
 
-
-        # self.remove = tk.Button(self)
-        # self.remove["text"] = "Remove List"
-
-        # self.remove["command"] = self.remove_list
-        # self.remove.pack(side="left")
-
+#This entire portion consists of all the buttons used in the program
 
 
 
@@ -374,7 +404,7 @@ remove button\
         for key in self.x:
             self.List1.insert(END, '{}: {}'.format(key, self.x[key]))
 
-    
+#These functions are all of the commands used for the buttons in the program
 
 
 
@@ -389,7 +419,13 @@ app.mainloop()
 
 
 
-#APP-3433-MLXX
+'''
+source1: https://pythonprogramming.net/object-oriented-programming-crash-course-tkinter/
+source2: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+source3: https://docs.python.org/3/library/tk.html
+source4: https://2.python-requests.org/en/master/
+source5: https://pythonprogramming.net/introduction-scraping-parsing-beautiful-soup-tutorial/
 
+'''
 
 
