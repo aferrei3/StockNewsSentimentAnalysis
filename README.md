@@ -1,6 +1,6 @@
 # StockNewsSentimentAnalysis
-This program analyzes stock sentiment from seeking alpha's multiple market news outlets
-
+This program analyzes stock sentiment from seeking alpha's multiple market news outlets.
+Please Read the User Guide in order to fully understand how to use it and how it works.
 
 In order to use this program the user has to use pip install for multiple python libraries:
 
